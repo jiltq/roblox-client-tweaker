@@ -22,13 +22,13 @@ exit /b
 :main
 cd /d "%LocalAppData%\Roblox\Versions"
 
-certutil -urlcache -split -f "https://raw.githubusercontent.com/%repo%/%branch%/data.json" "%tempFile%" >nul
+certutil -urlcache -split -f "https://clientsettings.roblox.com/v2/client-version/WindowsPlayer" "%tempFile%" >nul
 
 if %errorlevel% neq 0 (
 goto wifiError
 )
 
-for /f "delims=" %%A in ('powershell -Command "(Get-Content -Raw '%tempFile%') | ConvertFrom-Json | Select-Object -ExpandProperty version"') do (
+for /f "delims=" %%A in ('powershell -Command "(Get-Content -Raw '%tempFile%') | ConvertFrom-Json | Select-Object -ExpandProperty clientVersionUpload"') do (
     set "version=%%A"
 )
 del "%tempFile%"
