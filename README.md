@@ -14,7 +14,7 @@ the batch file `RobloxClientTweaker.bat` does the following things:
 that's it! super unintrusive, super lightweight.
 
 ## installation
-download `RobloxClientTweaker.bat` and put it on your desktop or something. even better, you can put it in your `shell:startup` folder to have it run on boot!
+download `RobloxClientTweaker.bat` from [the latest release](https://github.com/jiltq/roblox-client-tweaker/releases/latest) and put it on your desktop or something. even better, you can put it in your `shell:startup` folder to have it run on boot!
 
 then, just run it! **do note that you'll have to run it every time roblox updates, but that only happens weekly or so.**
 
