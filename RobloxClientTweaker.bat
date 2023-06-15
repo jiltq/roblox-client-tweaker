@@ -1,48 +1,62 @@
 @echo off
 
-set "repo=jiltq/roblox-client-tweaker"
-set "branch=main"
+set "Repo=jiltq/roblox-client-tweaker"
+set "Branch=main"
 
-set "version=nothing"
+set "RobloxVersionFolder=%LocalAppData%\Roblox\Versions"
+set "RobloxVersion=NA"
 
-set "tempFile=%temp%\data.json"
+set "RobloxInstallerDownload=https://setup.rbxcdn.com/Roblox.exe"
+set "RobloxInstallerFile=%temp%\RobloxInstaller.exe"
+
+set "RobloxClientVersionDownload=https://clientsettings.roblox.com/v2/client-version/WindowsPlayer"
+set "RobloxClientVersionFile=%temp%\RobloxClientVersion.json"
 
 goto main
 
-:wifiError
+:WiFiError
 echo Roblox Client Tweaker :: No internet connection found! Retrying...
 ping 127.0.0.1 -n 6 >nul
 goto main
 
-:versionError
-echo Roblox Client Tweaker :: Please update your roblox client!
-pause
-exit /b
+:UpdateLoop
+if not exist "%RobloxVersionFolder%\%RobloxVersion%" (
+ping 127.0.0.1 -n 1 >nul
+goto UpdateLoop
+)
+goto main
+
+:UpdateClient
+echo Roblox Client Tweaker :: Updating your client...
+certutil -urlcache -split -f "%RobloxInstallerDownload%" "%RobloxInstallerFile%" >nul
+if %errorlevel% neq 0 (
+goto WiFiError
+)
+start "" "%RobloxInstallerFile%"
+goto UpdateLoop
 
 :main
-cd /d "%LocalAppData%\Roblox\Versions"
-
-certutil -urlcache -split -f "https://clientsettings.roblox.com/v2/client-version/WindowsPlayer" "%tempFile%" >nul
+certutil -urlcache -split -f "%RobloxClientVersionDownload%" "%RobloxClientVersionFile%" >nul
 
 if %errorlevel% neq 0 (
-goto wifiError
+goto WiFiError
 )
 
-for /f "delims=" %%A in ('powershell -Command "(Get-Content -Raw '%tempFile%') | ConvertFrom-Json | Select-Object -ExpandProperty clientVersionUpload"') do (
-    set "version=%%A"
+for /f "delims=" %%A in ('powershell -Command "(Get-Content -Raw '%RobloxClientVersionFile%') | ConvertFrom-Json | Select-Object -ExpandProperty clientVersionUpload"') do (
+    set "RobloxVersion=%%A"
 )
-del "%tempFile%"
+del "%RobloxClientVersionFile%"
 
-if not exist "%cd%\%version%" (
-goto versionError
+if not exist "%RobloxVersionFolder%\%RobloxVersion%" (
+goto UpdateClient
 )
 
-cd %version%
+if not exist "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings" (
+mkdir "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings"
+)
 
-mkdir ClientSettings
-
-certutil -urlcache -split -f "https://raw.githubusercontent.com/%repo%/%branch%/ClientAppSettings.json" "%cd%\ClientSettings\ClientAppSettings.json" >nul
+certutil -urlcache -split -f "https://raw.githubusercontent.com/%Repo%/%Branch%/ClientAppSettings.json" "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings\ClientAppSettings.json" >nul
 
 if %errorlevel% neq 0 (
-goto wifiError
+goto WiFiError
 )
