@@ -13,7 +13,7 @@ the batch file `RobloxClientTweaker.bat` does the following things:
 that's it! super unintrusive, super lightweight.
 
 ## installation
-open up a powershell ≥3.0 window and run:
+open up a **powershell ≥3.0** window and run:
 
 ```powershell
 Invoke-WebRequest https://github.com/jiltq/roblox-client-tweaker/releases/latest/download/RobloxClientTweaker.bat -OutFile "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\RobloxClientTweaker.bat";cd "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup";.\RobloxClientTweaker.bat;exit
