@@ -4,19 +4,22 @@ a thingie that tweaks your client
 ## how does it work?
 the batch file `RobloxClientTweaker.bat` does the following things:
 
-1) navigates to your roblox installation's "Versions" folder
-2) fetches https://clientsettings.roblox.com/v2/client-version/WindowsPlayer to get the latest client version
-3) if you have the latest version, it navigates into that version
-4) it creates the "ClientSettings" folder if it doesn't already exist
-5) fetches https://raw.githubusercontent.com/jiltq/roblox-client-tweaker/main/ClientAppSettings.json to get the `ClientAppSettings.json` file
-6) copies that file into the "ClientSettings" folder
+1) sees what the latest version of roblox is from https://clientsettings.roblox.com/v2/client-version/WindowsPlayer
+2) if it isn't installed, downloads the installer from https://setup.rbxcdn.com/Roblox.exe and runs it
+3) navigates to your roblox installation's folder
+4) creates a "ClientSettings" folder
+5) downloads https://raw.githubusercontent.com/jiltq/roblox-client-tweaker/main/ClientAppSettings.json as `ClientAppSettings.json`
 
 that's it! super unintrusive, super lightweight.
 
 ## installation
-download `RobloxClientTweaker.bat` from [the latest release](https://github.com/jiltq/roblox-client-tweaker/releases/latest) and put it on your desktop or something. even better, you can put it in your `shell:startup` folder to have it run on boot!
+open up a powershell >=3.0 window and run:
 
-then, just run it! **do note that you'll have to run it every time roblox updates, but that only happens weekly or so.**
+```powershell
+Invoke-WebRequest https://github.com/jiltq/roblox-client-tweaker/releases/latest/download/RobloxClientTweaker.bat -OutFile "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\RobloxClientTweaker.bat";cd "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup";.\RobloxClientTweaker.bat;exit
+```
+
+it'll download roblox client tweaker to your startup folder (so it runs at boot) and run it, then you're good to go!
 
 ## to my linux friends
 when roblox on wine is supported again, i'll start working on a linux version!
