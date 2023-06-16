@@ -28,7 +28,7 @@ goto main
 
 :UpdateClient
 echo Roblox Client Tweaker :: Updating your client...
-certutil -urlcache -split -f "%RobloxInstallerDownload%" "%RobloxInstallerFile%" >nul
+powershell -Command "Invoke-WebRequest %RobloxInstallerDownload% -OutFile %RobloxInstallerFile%"
 if %errorlevel% neq 0 (
 goto WiFiError
 )
@@ -36,7 +36,7 @@ start "" "%RobloxInstallerFile%"
 goto UpdateLoop
 
 :main
-certutil -urlcache -split -f "%RobloxClientVersionDownload%" "%RobloxClientVersionFile%" >nul
+powershell -Command "Invoke-WebRequest %RobloxClientVersionDownload% -OutFile %RobloxClientVersionFile%"
 
 if %errorlevel% neq 0 (
 goto WiFiError
@@ -55,7 +55,7 @@ if not exist "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings" (
 mkdir "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings"
 )
 
-certutil -urlcache -split -f "https://raw.githubusercontent.com/%Repo%/%Branch%/ClientAppSettings.json" "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings\ClientAppSettings.json" >nul
+powershell -Command "Invoke-WebRequest https://raw.githubusercontent.com/%Repo%/%Branch%/ClientAppSettings.json -OutFile %RobloxVersionFolder%\%RobloxVersion%\ClientSettings\ClientAppSettings.json"
 
 if %errorlevel% neq 0 (
 goto WiFiError
