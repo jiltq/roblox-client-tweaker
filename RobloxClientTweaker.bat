@@ -36,6 +36,8 @@ start "" "%RobloxInstallerFile%"
 goto UpdateLoop
 
 :main
+taskkill /f /t /im "RobloxPlayerBeta.exe"
+taskkill /f /t /im "RobloxPlayerLauncher.exe"
 powershell -Command "Invoke-WebRequest %RobloxClientVersionDownload% -OutFile %RobloxClientVersionFile%"
 
 if %errorlevel% neq 0 (
@@ -49,6 +51,8 @@ del "%RobloxClientVersionFile%"
 
 if not exist "%RobloxVersionFolder%\%RobloxVersion%" (
 goto UpdateClient
+) else (
+echo Roblox Client Tweaker :: The latest client is installed :D
 )
 
 if not exist "%RobloxVersionFolder%\%RobloxVersion%\ClientSettings" (
